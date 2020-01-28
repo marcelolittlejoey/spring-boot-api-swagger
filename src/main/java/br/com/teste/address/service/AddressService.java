@@ -2,6 +2,7 @@ package br.com.teste.address.service;
 
 import br.com.teste.address.domain.Address;
 import br.com.teste.address.repository.IAddressRepository;
+import br.com.teste.address.repository.dto.LocationDTO;
 import br.com.teste.api.v1.input.CreateAddressDTO;
 import br.com.teste.api.v1.output.GetAddressDTO;
 import br.com.teste.api.v1.output.GetAddressDTOBuilder;
@@ -20,8 +21,16 @@ public class AddressService implements IAddressService {
 
     @Override
     public Long insert(CreateAddressDTO createAddressDTO) {
+        Address address = buildDomain(createAddressDTO);
+        if(!hasCoordinates(address)){
+            LocationDTO coordinates = addressRepository.getCoordinates(address);
+            address.setCoordinates(coordinates.getLatitude(), coordinates.getLongitude());
+        }
+        return addressRepository.insert(address);
+    }
 
-        return addressRepository.insert(buildDomain(createAddressDTO));
+    private boolean hasCoordinates(Address address) {
+        return address.getLatitude() != null && address.getLongitude() != null;
     }
 
     @Override

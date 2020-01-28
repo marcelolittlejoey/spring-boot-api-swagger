@@ -98,4 +98,9 @@ public class Address {
     public Double getLongitude() {
         return longitude;
     }
+
+    public void setCoordinates(Double latitude, Double longitude) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
 }
