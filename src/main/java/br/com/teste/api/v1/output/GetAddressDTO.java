@@ -30,7 +30,7 @@ public class GetAddressDTO {
     @JsonProperty("country")
     private String country;
 
-    @JsonProperty("zipcode")
+    @JsonProperty("zip_code")
     private String zipcode;
 
     @JsonProperty("latitude")

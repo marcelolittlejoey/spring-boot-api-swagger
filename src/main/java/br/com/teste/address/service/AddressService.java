@@ -42,6 +42,14 @@ public class AddressService implements IAddressService {
         return null;
     }
 
+    @Override
+    public void delete(Long id) {
+        final Optional<Address> address = addressRepository.findById(id);
+        if(address.isPresent()){
+            addressRepository.delete(address.get());
+        }
+    }
+
     private GetAddressDTO builGetDTO(Address address) {
         return new GetAddressDTOBuilder()
                 .withId(address.getId())

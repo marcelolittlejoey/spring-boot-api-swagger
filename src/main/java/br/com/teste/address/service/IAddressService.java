@@ -8,4 +8,6 @@ public interface IAddressService {
     Long insert(CreateAddressDTO createAddressDTO);
 
     GetAddressDTO findById(Long id);
+
+    void delete(Long id);
 }

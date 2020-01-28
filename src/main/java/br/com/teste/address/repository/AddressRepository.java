@@ -4,6 +4,7 @@ import br.com.teste.address.domain.Address;
 import br.com.teste.address.entity.AddressEntity;
 import br.com.teste.address.entity.AddressEntityBuilder;
 import br.com.teste.address.repository.dto.LocationDTO;
+import br.com.teste.api.v1.output.GetAddressDTO;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -79,7 +80,7 @@ public class AddressRepository implements IAddressRepository {
         try {
             final String uri = getUri(URI_GOOGLE_SERVICE);
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(uri)
-                .queryParam("address", address.getStreetName())
+                .queryParam("address", buildAddrees(address))
                 .queryParam("key", getUri(GOOGLE_SERVICE_KEY));
             final ResponseEntity<String> response =
                 restTemplate.exchange(builder.toUriString(), HttpMethod.GET, buildHttpEntity(), String.class);
@@ -90,6 +91,36 @@ public class AddressRepository implements IAddressRepository {
         } catch (Exception e) {
             LOG.error("Erro ao buscar coordenadas", e);
             throw new RuntimeException(e);
+        }
+    }
+
+    private String buildAddrees(Address address) {
+        return address.getNumber().toString()
+            + " "
+            + address.getStreetName()
+            + ","
+            + address.getNeighbourhood()
+            + ","
+            + address.getCity()
+            + ","
+            + address.getState();
+    }
+
+    @Override
+    @Transactional
+    public void delete(Address address) {
+        StringBuilder query = new StringBuilder();
+        query.append(" SELECT address ");
+        query.append(" FROM " + AddressEntity.class.getName() + " address ");
+        query.append(" WHERE address.id = :id ");
+        Query q = em.createQuery(query.toString());
+        q.setParameter("id", address.getId());
+
+        try {
+            AddressEntity addressEntity = (AddressEntity) q.getSingleResult();
+            em.remove(addressEntity);
+        } catch (NoResultException e){
+            throw new RuntimeException();
         }
     }
 
