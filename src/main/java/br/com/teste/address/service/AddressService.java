@@ -1,8 +1,23 @@
 package br.com.teste.address.service;
 
 import br.com.teste.address.domain.Address;
+import br.com.teste.address.exception.CityInvalidException;
+import br.com.teste.address.exception.CountryInvalidException;
+import br.com.teste.address.exception.NeighbourhoodInvalidException;
+import br.com.teste.address.exception.NumberInvalidException;
+import br.com.teste.address.exception.StateInvalidException;
+import br.com.teste.address.exception.StreetNameInvalidException;
+import br.com.teste.address.exception.ZipCodeInvalidException;
 import br.com.teste.address.repository.IAddressRepository;
 import br.com.teste.address.repository.dto.LocationDTO;
+import br.com.teste.api.v1.exception.AddressNotFoundAPIException;
+import br.com.teste.api.v1.exception.CityInvalidAPIException;
+import br.com.teste.api.v1.exception.CountryInvalidAPIException;
+import br.com.teste.api.v1.exception.NeighbourhoodInvalidAPIException;
+import br.com.teste.api.v1.exception.NumberInvalidAPIException;
+import br.com.teste.api.v1.exception.StateInvalidAPIException;
+import br.com.teste.api.v1.exception.StreetNameInvalidAPIException;
+import br.com.teste.api.v1.exception.ZipCodeInvalidAPIException;
 import br.com.teste.api.v1.input.CreateAddressDTO;
 import br.com.teste.api.v1.output.GetAddressDTO;
 import br.com.teste.api.v1.output.GetAddressDTOBuilder;
@@ -21,12 +36,30 @@ public class AddressService implements IAddressService {
 
     @Override
     public Long insert(CreateAddressDTO createAddressDTO) {
-        Address address = buildDomain(createAddressDTO);
-        if(!hasCoordinates(address)){
-            LocationDTO coordinates = addressRepository.getCoordinates(address);
-            address.setCoordinates(coordinates.getLatitude(), coordinates.getLongitude());
+        try {
+            Address address = buildDomain(createAddressDTO);
+            if(!hasCoordinates(address)){
+                LocationDTO coordinates = addressRepository.getCoordinates(address);
+                address.setCoordinates(coordinates.getLatitude(), coordinates.getLongitude());
+            }
+            return addressRepository.insert(address);
+        } catch (StreetNameInvalidException e){
+            throw new StreetNameInvalidAPIException();
+        } catch (CityInvalidException e){
+            throw new CityInvalidAPIException();
+        } catch (CountryInvalidException e){
+            throw new CountryInvalidAPIException();
+        } catch (NeighbourhoodInvalidException e){
+            throw new NeighbourhoodInvalidAPIException();
+        } catch (StateInvalidException e){
+            throw new StateInvalidAPIException();
+        } catch (NumberInvalidException e){
+            throw new NumberInvalidAPIException();
+        } catch (ZipCodeInvalidException e){
+            throw new ZipCodeInvalidAPIException();
         }
-        return addressRepository.insert(address);
+
+
     }
 
     private boolean hasCoordinates(Address address) {
@@ -39,7 +72,7 @@ public class AddressService implements IAddressService {
         if(address.isPresent()){
             return builGetDTO(address.get());
         }
-        return null;
+        throw new AddressNotFoundAPIException();
     }
 
     @Override
@@ -47,7 +80,9 @@ public class AddressService implements IAddressService {
         final Optional<Address> address = addressRepository.findById(id);
         if(address.isPresent()){
             addressRepository.delete(address.get());
+            return;
         }
+        throw new AddressNotFoundAPIException();
     }
 
     private GetAddressDTO builGetDTO(Address address) {

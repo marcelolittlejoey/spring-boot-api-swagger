@@ -3,6 +3,7 @@ package br.com.teste.api.v1.rs;
 import br.com.teste.address.service.IAddressService;
 import br.com.teste.api.v1.input.CreateAddressDTO;
 import br.com.teste.api.v1.output.GetAddressDTO;
+import br.com.teste.api.v1.output.SuccessCreateDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -27,11 +28,11 @@ public class AddressRS {
 
     @ApiOperation(value = "Inseri um novo endereço.")
     @RequestMapping(name = "createAddress", consumes = {"application/json"}, method =  RequestMethod.POST)
-    public ResponseEntity createAddress(
+    public ResponseEntity<SuccessCreateDTO> createAddress(
         @ApiParam(value = "Dados do endereço", required = true)
         @RequestBody CreateAddressDTO createAddressDTO) {
         final Long id = addressService.insert(createAddressDTO);
-        return new ResponseEntity(id, HttpStatus.OK);
+        return new ResponseEntity(new SuccessCreateDTO(id), HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Recupera um endereco através do Id.")

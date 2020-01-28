@@ -8,11 +8,11 @@ import io.swagger.annotations.ApiModelProperty;
 public class CreateAddressDTO {
 
     @JsonProperty("street_name")
-    @ApiModelProperty(required = true,allowableValues ="Ocean Dr")
+    @ApiModelProperty(required = true,allowableValues ="Collins Ave")
     private String streetName;
 
     @JsonProperty("number")
-    @ApiModelProperty(required = true,allowableValues ="555")
+    @ApiModelProperty(required = true,allowableValues ="1501")
     private Integer number;
 
     @JsonProperty("complement")
@@ -36,15 +36,15 @@ public class CreateAddressDTO {
     private String country;
 
     @JsonProperty("zip_code")
-    @ApiModelProperty(required = true,allowableValues ="29582")
+    @ApiModelProperty(required = true,allowableValues ="33139")
     private String zipcode;
 
     @JsonProperty("latitude")
-    @ApiModelProperty(allowableValues ="25.7768972802915")
+    @ApiModelProperty(allowableValues ="25.7616798")
     private Double latitude;
 
     @JsonProperty("longitude")
-    @ApiModelProperty(allowableValues ="-80.1303725197085")
+    @ApiModelProperty(allowableValues ="-80.1917902")
     private Double longitude;
 
     public String getStreetName() {

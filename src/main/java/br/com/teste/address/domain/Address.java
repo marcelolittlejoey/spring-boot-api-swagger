@@ -1,5 +1,16 @@
 package br.com.teste.address.domain;
 
+import br.com.teste.address.exception.CityInvalidException;
+import br.com.teste.address.exception.CountryInvalidException;
+import br.com.teste.address.exception.NeighbourhoodInvalidException;
+import br.com.teste.address.exception.NumberInvalidException;
+import br.com.teste.address.exception.StateInvalidException;
+import br.com.teste.address.exception.StreetNameInvalidException;
+import br.com.teste.address.exception.ZipCodeInvalidException;
+import br.com.teste.api.v1.exception.NeighbourhoodInvalidAPIException;
+import br.com.teste.api.v1.exception.StreetNameInvalidAPIException;
+import org.springframework.util.StringUtils;
+
 public class Address {
 
     private Long id;
@@ -27,13 +38,20 @@ public class Address {
     public void register(final String streetName, final Integer number, final String complement,
                          final String neighbourhood, final String city, final String state, final String country,
                          final String zipcode, final Double latitude, final Double longitude) {
+        checkStreetName(streetName);
         this.streetName = streetName;
+        checkNumber(number);
         this.number = number;
         this.complement = complement;
+        checkNeighbourhood(neighbourhood);
         this.neighbourhood = neighbourhood;
+        checkCity(city);
         this.city = city;
+        checkState(state);
         this.state = state;
+        checkCountry(country);
         this.country = country;
+        checkZipcode(zipcode);
         this.zipcode = zipcode;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -55,8 +73,55 @@ public class Address {
         this.longitude = longitude;
     }
 
-    public Long getId() {
-        return id;
+
+    private void checkStreetName(String streetName) {
+        if(isFieldEmpty(streetName)){
+            throw new StreetNameInvalidException();
+        }
+    }
+
+    private void checkNumber(Integer number) {
+        if(isFieldEmpty(number)){
+            throw new NumberInvalidException();
+        }
+    }
+
+    private void checkNeighbourhood(String neighbourhood) {
+        if(isFieldEmpty(neighbourhood)){
+            throw new NeighbourhoodInvalidException();
+        }
+    }
+
+    private void checkState(String state) {
+        if(isFieldEmpty(state)){
+            throw new StateInvalidException();
+        }
+    }
+
+    private void checkCountry(String country) {
+        if(isFieldEmpty(country)){
+            throw new CountryInvalidException();
+        }
+    }
+
+    private void checkZipcode(String zipcode) {
+        if(isFieldEmpty(zipcode)){
+            throw new ZipCodeInvalidException();
+        }
+    }
+
+    private void checkCity(String city) {
+        if(isFieldEmpty(city)){
+            throw new CityInvalidException();
+        }
+    }
+
+    private boolean isFieldEmpty(String streetName) {
+        return StringUtils.isEmpty(streetName);
+    }
+
+    private boolean isFieldEmpty(Number field) {
+        return field == null;
     }
 
     public String getStreetName() {
@@ -102,5 +167,9 @@ public class Address {
     public void setCoordinates(Double latitude, Double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
+    }
+
+    public Long getId() {
+        return id;
     }
 }
