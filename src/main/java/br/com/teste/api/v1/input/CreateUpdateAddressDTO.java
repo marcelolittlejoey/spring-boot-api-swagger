@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
-@JsonIgnoreProperties(value = "true")
-public class CreateAddressDTO {
+@JsonIgnoreProperties
+public class CreateUpdateAddressDTO {
 
     @JsonProperty("street_name")
     @ApiModelProperty(required = true,allowableValues ="Collins Ave")

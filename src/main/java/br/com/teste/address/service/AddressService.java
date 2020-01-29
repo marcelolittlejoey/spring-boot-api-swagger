@@ -18,7 +18,7 @@ import br.com.teste.api.v1.exception.NumberInvalidAPIException;
 import br.com.teste.api.v1.exception.StateInvalidAPIException;
 import br.com.teste.api.v1.exception.StreetNameInvalidAPIException;
 import br.com.teste.api.v1.exception.ZipCodeInvalidAPIException;
-import br.com.teste.api.v1.input.CreateAddressDTO;
+import br.com.teste.api.v1.input.CreateUpdateAddressDTO;
 import br.com.teste.api.v1.output.GetAddressDTO;
 import br.com.teste.api.v1.output.GetAddressDTOBuilder;
 import org.springframework.stereotype.Service;
@@ -35,7 +35,7 @@ public class AddressService implements IAddressService {
     }
 
     @Override
-    public Long insert(CreateAddressDTO createAddressDTO) {
+    public Long insert(CreateUpdateAddressDTO createAddressDTO) {
         try {
             Address address = buildDomain(createAddressDTO);
             if(!hasCoordinates(address)){
@@ -70,7 +70,7 @@ public class AddressService implements IAddressService {
     public GetAddressDTO findById(Long id) {
         final Optional<Address> address = addressRepository.findById(id);
         if(address.isPresent()){
-            return builGetDTO(address.get());
+            return buildGetDTO(address.get());
         }
         throw new AddressNotFoundAPIException();
     }
@@ -85,7 +85,38 @@ public class AddressService implements IAddressService {
         throw new AddressNotFoundAPIException();
     }
 
-    private GetAddressDTO builGetDTO(Address address) {
+    @Override
+    public void update(Long id, CreateUpdateAddressDTO createUpdateAddressDTO) {
+        final Optional<Address> oldAddress = addressRepository.findById(id);
+        if(oldAddress.isPresent()){
+            try {
+                Address newAddress = buildDomain(createUpdateAddressDTO);
+                if(!hasCoordinates(newAddress)){
+                    LocationDTO coordinates = addressRepository.getCoordinates(newAddress);
+                    newAddress.setCoordinates(coordinates.getLatitude(), coordinates.getLongitude());
+                }
+                addressRepository.update(newAddress, id);
+                return;
+            } catch (StreetNameInvalidException e){
+                throw new StreetNameInvalidAPIException();
+            } catch (CityInvalidException e){
+                throw new CityInvalidAPIException();
+            } catch (CountryInvalidException e){
+                throw new CountryInvalidAPIException();
+            } catch (NeighbourhoodInvalidException e){
+                throw new NeighbourhoodInvalidAPIException();
+            } catch (StateInvalidException e){
+                throw new StateInvalidAPIException();
+            } catch (NumberInvalidException e){
+                throw new NumberInvalidAPIException();
+            } catch (ZipCodeInvalidException e){
+                throw new ZipCodeInvalidAPIException();
+            }
+        }
+        throw new AddressNotFoundAPIException();
+    }
+
+    private GetAddressDTO buildGetDTO(Address address) {
         return new GetAddressDTOBuilder()
                 .withId(address.getId())
                 .withCity(address.getCity())
@@ -102,7 +133,7 @@ public class AddressService implements IAddressService {
                 .createGetAddressDTO();
     }
 
-    private Address buildDomain(CreateAddressDTO createAddressDTO) {
+    private Address buildDomain(CreateUpdateAddressDTO createAddressDTO) {
         Address address = new Address();
         address.register(createAddressDTO.getStreetName(), createAddressDTO.getNumber(), createAddressDTO.getComplement(),
                 createAddressDTO.getNeighbourhood(), createAddressDTO.getCity(), createAddressDTO.getState(),

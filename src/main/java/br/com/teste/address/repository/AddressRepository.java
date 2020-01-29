@@ -124,6 +124,28 @@ public class AddressRepository implements IAddressRepository {
         }
     }
 
+    @Override
+    @Transactional
+    public void update(Address newAddress, Long id) {
+        AddressEntity addressEntity = em.find(AddressEntity.class, id);
+        updateAddressEntity(newAddress, addressEntity);
+        em.merge(addressEntity);
+    }
+
+    private void updateAddressEntity(Address newAddress, AddressEntity addressEntity) {
+        addressEntity.setCity(newAddress.getCity());
+        addressEntity.setComplement(newAddress.getComplement());
+        addressEntity.setCountry(newAddress.getCountry());
+        addressEntity.setLatitude(newAddress.getLatitude());
+        addressEntity.setLongitude(newAddress.getLongitude());
+        addressEntity.setNeighbourhood(newAddress.getNeighbourhood());
+        addressEntity.setNumber(newAddress.getNumber());
+        addressEntity.setState(newAddress.getState());
+        addressEntity.setZipcode(newAddress.getZipcode());
+        addressEntity.setStreetName(newAddress.getStreetName());
+
+    }
+
     private String getUri(String uriPropterty) {
         final String baseUri = env.getProperty(uriPropterty);
         if (StringUtils.isEmpty(baseUri)) {

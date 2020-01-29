@@ -1,7 +1,7 @@
 package br.com.teste.api.v1.rs;
 
 import br.com.teste.address.service.IAddressService;
-import br.com.teste.api.v1.input.CreateAddressDTO;
+import br.com.teste.api.v1.input.CreateUpdateAddressDTO;
 import br.com.teste.api.v1.output.GetAddressDTO;
 import br.com.teste.api.v1.output.SuccessCreateDTO;
 import io.swagger.annotations.Api;
@@ -30,13 +30,13 @@ public class AddressRS {
     @RequestMapping(name = "createAddress", consumes = {"application/json"}, method =  RequestMethod.POST)
     public ResponseEntity<SuccessCreateDTO> createAddress(
         @ApiParam(value = "Dados do endereço", required = true)
-        @RequestBody CreateAddressDTO createAddressDTO) {
-        final Long id = addressService.insert(createAddressDTO);
-        return new ResponseEntity(new SuccessCreateDTO(id), HttpStatus.CREATED);
+        @RequestBody CreateUpdateAddressDTO createUpdateAddressDTO) {
+        final Long id = addressService.insert(createUpdateAddressDTO);
+        return new ResponseEntity<>(new SuccessCreateDTO(id), HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Recupera um endereco através do Id.")
-    @RequestMapping(name = "createAddress", path = "/{id}", consumes = {"application/json"}, method =
+    @RequestMapping(name = "getAddress", path = "/{id}", consumes = {"application/json"}, method =
         RequestMethod.GET)
     public GetAddressDTO getAddress(
         @ApiParam(value = "Id do endereço cadastrado", required = true)
@@ -44,10 +44,22 @@ public class AddressRS {
         return addressService.findById(id);
     }
 
+    @ApiOperation(value = "Atualiza um endereco através do Id.")
+    @RequestMapping(name = "updateAddress", path = "/{id}", consumes = {"application/json"}, method =
+        RequestMethod.PUT)
+    public ResponseEntity updateAddress(
+        @ApiParam(value = "Id do endereço cadastrado", required = true)
+        @PathVariable("id") Long id,
+        @ApiParam(value = "Novos dados do endereço", required = true)
+        @RequestBody CreateUpdateAddressDTO createUpdateAddressDTO) {
+        addressService.update(id, createUpdateAddressDTO);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
     @ApiOperation(value = "Exclui um endereco através do Id.")
-    @RequestMapping(name = "createAddress", path = "/{id}", consumes = {"application/json"}, method =
+    @RequestMapping(name = "deleteAddress", path = "/{id}", consumes = {"application/json"}, method =
         RequestMethod.DELETE)
-    public ResponseEntity<Void> deleteAddress(
+    public ResponseEntity deleteAddress(
         @ApiParam(value = "Id do endereço cadastrado", required = true)
         @PathVariable("id") Long id) {
         addressService.delete(id);

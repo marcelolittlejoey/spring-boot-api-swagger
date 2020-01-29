@@ -15,4 +15,6 @@ public interface IAddressRepository {
     LocationDTO getCoordinates(Address address);
 
     void delete(Address address);
+
+    void update(Address newAddress, Long id);
 }
