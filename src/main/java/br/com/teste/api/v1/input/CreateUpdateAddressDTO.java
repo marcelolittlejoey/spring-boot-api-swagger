@@ -47,6 +47,24 @@ public class CreateUpdateAddressDTO {
     @ApiModelProperty(allowableValues ="-80.1917902")
     private Double longitude;
 
+    public CreateUpdateAddressDTO() {
+    }
+
+    public CreateUpdateAddressDTO(String streetName, Integer number, String complement, String neighbourhood,
+                                  String city, String state, String country, String zipcode, Double latitude,
+                                  Double longitude) {
+        this.streetName = streetName;
+        this.number = number;
+        this.complement = complement;
+        this.neighbourhood = neighbourhood;
+        this.city = city;
+        this.state = state;
+        this.country = country;
+        this.zipcode = zipcode;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
     public String getStreetName() {
         return streetName;
     }
