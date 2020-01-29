@@ -8,7 +8,6 @@ import br.com.teste.address.exception.StateInvalidException;
 import br.com.teste.address.exception.StreetNameInvalidException;
 import br.com.teste.address.exception.ZipCodeInvalidException;
 import org.junit.Test;
-import org.junit.internal.runners.statements.ExpectException;
 
 public class AddressTest {
 
