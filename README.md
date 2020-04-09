@@ -1,6 +1,6 @@
 # Spring-boot - API - Swagger
 
-Service responsable to register address. It's possible to create, update, find and delete an address.
+Service responsable to register address. It's possible to create, update, read and delete an address.
 
 API RESTful
 
