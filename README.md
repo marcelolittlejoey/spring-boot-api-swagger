@@ -2,9 +2,9 @@
 
 Service responsable to register address. It's possible to create, update, find and delete an address.
 
-API docummentation by Swagger. 
+API RESTful
 
-Swagger-UI: http://localhost:8090/swagger-ui.html
+API docummentation by Swagger. 
 
 **Running application**
 
@@ -15,5 +15,6 @@ Swagger-UI: http://localhost:8090/swagger-ui.html
     mvn clean install
     docker build -t teste-api:latest .
     docker run --name teste-api -p 8090:8090 teste-api:latest
-    
+
+Swagger-UI: http://localhost:8090/swagger-ui.html    
 
