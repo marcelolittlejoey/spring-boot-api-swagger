@@ -13,8 +13,8 @@ API docummentation by Swagger.
 -By Docker:
 
     mvn clean install
-    docker build -t teste-api:latest .
-    docker run --name teste-api -p 8090:8090 teste-api:latest
+    docker build -t spring-boot-api-swagger:latest .
+    docker run --name spring-boot-api-swagger -p 8090:8090 teste-api:latest
 
 Swagger-UI: http://localhost:8090/swagger-ui.html    
 
