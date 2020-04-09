@@ -1,16 +1,16 @@
-# Teste-api
+# Spring-boot - API - Swagger
 
-Serviço responsável por cadastar endereços. É possível criar, alterar, recuperar e excluir um endereço.
+Service responsable to register address. It's possible to create, update, find and delete an address.
 
-O projeto foi documentado via Swagger:
+API docummentation by Swagger. 
 
-Url: http://localhost:8090/swagger-ui.html
+Swagger-UI: http://localhost:8090/swagger-ui.html
 
-**Subindo a aplicação**
+**Running application**
 
--Subir via maven: mvn spring-boot:run
+-By maven: mvn spring-boot:run
 
--Via Docker:
+-By Docker:
 
     mvn clean install
     docker build -t teste-api:latest .
