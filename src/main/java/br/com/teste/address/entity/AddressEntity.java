@@ -3,7 +3,7 @@ package br.com.teste.address.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "Endereco")
+@Table(name = "Address")
 public class AddressEntity {
 
     @Id

@@ -4,17 +4,12 @@ import br.com.teste.address.domain.Address;
 import br.com.teste.address.entity.AddressEntity;
 import br.com.teste.address.entity.AddressEntityBuilder;
 import br.com.teste.address.repository.dto.LocationDTO;
-import br.com.teste.api.v1.output.GetAddressDTO;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.StringUtils;
@@ -32,8 +27,8 @@ import java.util.Optional;
 @Repository
 public class AddressRepository implements IAddressRepository {
 
-    private static final String GOOGLE_SERVICE_KEY = "testeapi.address.getCoordinates.key";
-    private final String URI_GOOGLE_SERVICE = "testeapi.address.getCoordinates";
+    private static final String GOOGLE_SERVICE_KEY = "api.address.getCoordinates.key";
+    private final String URI_GOOGLE_SERVICE = "api.address.getCoordinates";
     private static final Logger LOG = LoggerFactory.getLogger(AddressRepository.class);
 
     private final RestTemplate restTemplate;
@@ -149,7 +144,7 @@ public class AddressRepository implements IAddressRepository {
     private String getUri(String uriPropterty) {
         final String baseUri = env.getProperty(uriPropterty);
         if (StringUtils.isEmpty(baseUri)) {
-            throw new IllegalArgumentException("base uri nao configurada");
+            throw new IllegalArgumentException("buri base not configured");
         }
         return baseUri;
     }
@@ -157,7 +152,7 @@ public class AddressRepository implements IAddressRepository {
     private String getKey(){
         final String baseUri = env.getProperty(GOOGLE_SERVICE_KEY);
         if (StringUtils.isEmpty(baseUri)) {
-            throw new IllegalArgumentException("base uri nao configurada");
+            throw new IllegalArgumentException("uri base not configured");
         }
         return baseUri;
     }

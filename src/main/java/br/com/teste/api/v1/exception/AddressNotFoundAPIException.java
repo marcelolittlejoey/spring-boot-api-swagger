@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class AddressNotFoundAPIException extends RuntimeException {
 
     public AddressNotFoundAPIException() {
-        super("Endereço não encontrado");
+        super("Address not found");
     }
 }
